@@ -1,2 +1,1 @@
-# SolontsovVadimHomeWorks
-My django learning project
+# SolontsovVadim-HomeWorks
