@@ -1,1 +1,4 @@
-# SolontsovVadim-HomeWorks
+# SolontsovVadimHomeWorks
+# My django learning project
+
+Солонцов Вадим
