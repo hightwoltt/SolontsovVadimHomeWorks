@@ -38,7 +38,7 @@ class Command(BaseCommand):
             '@yandex.ru', '@yandex.ua', '@yandex.kz',
             '@mail.ru', '@mail.ua', '@mail.kz',
         )
-
+        
         super_users: int = User.objects.filter(is_superuser="True")
 
         if super_users.count() <= 1:
@@ -54,7 +54,7 @@ class Command(BaseCommand):
         elif super_users.count() >= 2:
             print('Superuser quantity is limited')
 
-        # Строки 53 и 54 не соответствуют PEP-8 т.к 
+        # Строки 72 и 73 не соответствуют PEP-8 т.к 
         # после поереноса на новую строку в username 
         # и email подставляются лишние пробелы
 
