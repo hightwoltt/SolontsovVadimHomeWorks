@@ -1,8 +1,6 @@
-
-
 from venv import create
-from django.db import models
 
+from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.db.models import QuerySet
@@ -82,11 +80,6 @@ class Group(AbstractDateTime):
         )
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
-
-
-class Foo():
-    pass
-
 
 class Student(AbstractDateTime):
 

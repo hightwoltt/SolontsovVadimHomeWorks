@@ -2,8 +2,10 @@
 from re import search
 from tokenize import group
 from typing import Optional
+
 from django.contrib import admin
 from django.core.handlers.wsgi import WSGIRequest
+
 from . models import (Account, 
                     Student, 
                     Group,
@@ -38,21 +40,9 @@ class StudentAdmin(admin.ModelAdmin):
         'datetime_updated',
         'datetime_deleted',
     )
-    # list_filter = (
-    #     'gpa',
-    #     'age',
-    # )
-    # search_fields = (
-    #     'account__full_name',
-    # )
-    # list_display = (
-    #     'age',
-    #     'gpa',
-    #     'group__name',
-    #     'accuount__full_name',
-    # )
+   
     MAX_STUDENT_AGE = 16
-    SUPER_STUDENT_NAME = 'ВладимирВладимировичПутин'
+    SUPER_STUDENT_NAME = 'DevAdmin'
 
     def student_age_validation(
         self,
