@@ -123,14 +123,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-<<<<<<< HEAD
 INTERNAL_IPS = [
     "127.0.0.1",
 
 ]
-
-=======
->>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
