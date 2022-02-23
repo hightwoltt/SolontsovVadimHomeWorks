@@ -1,0 +1,77 @@
+body{
+    background-color: rgb(216, 216, 216);
+    font-family: 'Oswald', sans-serif;
+}
+
+header{
+    width: 100%;
+    height: 100px;
+    display: flex;
+}
+.user__list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 50px;
+    width: 95%;
+    z-index: -500;
+}
+.user__info {
+    width: 400px;
+    height: 480px;
+    box-shadow: 0 0 15px black;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.2s;
+    margin-top: 150px;
+}
+
+.user__info.event{
+    transform: scale(1.5);
+    background-color: rgb(163, 157, 162);
+    z-index: 100;
+}
+
+
+.user__gold__border{
+    box-shadow: 0 0 15px rgb(187, 162, 22);
+}
+
+.info {
+    font-size: 20px;
+}
+.edit {
+    margin-top: 100px;
+    background-color: rgba(41, 124, 201, 0.445);
+    color: white;
+    border: none;
+    width: 100%;
+    height: 12%;
+    transition: all 0.2s;
+}
+.edit:hover{
+    transform: scale(1.1) translate(0, 10%);
+    border-radius: 5px;
+    background-color: rgb(24, 133, 196) ;
+}
+
+.delete {
+    background-color: rgb(255, 102, 102);
+    color: black;
+    border: none;
+    width: 100%;
+    height: 12%;
+    transition: all 0.2s;
+}
+.delete:hover{
+    transform: scale(1.2) translate(0, -5%);
+    border-radius: 5px;
+    background-color: rgb(240, 45, 20);
+}
+
