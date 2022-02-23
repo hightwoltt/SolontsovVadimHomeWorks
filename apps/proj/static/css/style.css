@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(218, 210, 217);
+    background-color: rgb(235, 227, 234);
     font-family: 'Oswald', sans-serif;
 }
 
@@ -10,6 +10,7 @@ header{
 }
 .user__list {
     display: flex;
+    flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
     width: 100%;

@@ -10,8 +10,7 @@ users.forEach(user => {
     user.addEventListener('mouseover', (e) => {
         user.classList.add('event')
         clearTimeout(clearText)
-
-
+        
         let oldUserInfo = user.innerHTML
         user.querySelector('h1').innerHTML = user.querySelector('#user_name').innerHTML
         user.querySelector('#user_name').outerHTML = ''
