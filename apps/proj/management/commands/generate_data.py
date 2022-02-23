@@ -19,6 +19,10 @@ from proj.models import (
 
 class Command(BaseCommand):
     """Custom command for filling up database.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
     Test data only
     """
     help = 'Custom command for filling up database.'
@@ -29,7 +33,11 @@ class Command(BaseCommand):
     def _generate_users(self) -> None:
         """Generate User objects."""
 
+<<<<<<< HEAD
         TOTAL_USERS_COUNT = 500
+=======
+        TOTAL_USERS_COUNT = 1000
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 
         _email_patterns: tuple = (
             '@gmail.com', '@outlook.com', '@yahoo.com',
@@ -72,7 +80,13 @@ class Command(BaseCommand):
                         email = f'{user_first_name.lower()}.{user_last_name.lower()}{random.choice(_email_patterns)}'),
             except Exception:
                 print('Users count out of TOTAL_USERS_COUNT')
+<<<<<<< HEAD
             
+=======
+
+            
+
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
     def handle(self, *args: tuple, **kwargs: dict) -> None:
         """Handles data filling."""
 

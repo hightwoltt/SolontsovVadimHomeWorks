@@ -1,8 +1,14 @@
+<<<<<<< HEAD
 
 
 from venv import create
 from django.db import models
 
+=======
+from venv import create
+
+from django.db import models
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.db.models import QuerySet
@@ -83,11 +89,14 @@ class Group(AbstractDateTime):
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
 
+<<<<<<< HEAD
 
 class Foo():
     pass
 
 
+=======
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 class Student(AbstractDateTime):
 
     GROUP_NAME_MAX_LENGHT = 15

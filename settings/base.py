@@ -40,13 +40,20 @@ DJANGO_AND_THIRD_PARTY_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'debug_toolbar',
+=======
+    'names',
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 ]
 
 PROJECTS_APPS = [
     'proj.apps.ProjConfig',
     'abstracts.apps.AbstractsConfig',
+<<<<<<< HEAD
     'django_extensions',
+=======
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 ]
 
 INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECTS_APPS
@@ -59,8 +66,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+<<<<<<< HEAD
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     
+=======
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 ]
 
 ROOT_URLCONF = 'urls.urls'
@@ -113,11 +123,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+<<<<<<< HEAD
 INTERNAL_IPS = [
     "127.0.0.1",
 
 ]
 
+=======
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -137,6 +150,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+<<<<<<< HEAD
 STATIC_ROOT = './apps/proj/static'
+=======
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 
 ADMIN_SITE_URL = 'adminus'

@@ -2,8 +2,11 @@
 __pycache__/
 *.py[cod]
 *$py.class
+<<<<<<< HEAD
 venv_proj
 
+=======
+>>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 
 # C extensions
 *.so
