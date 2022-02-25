@@ -40,11 +40,14 @@ DJANGO_AND_THIRD_PARTY_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar',
+    'names',
 ]
 
 PROJECTS_APPS = [
     'proj.apps.ProjConfig',
     'abstracts.apps.AbstractsConfig',
+    'django_extensions',
 ]
 
 INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECTS_APPS
@@ -57,6 +60,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'urls.urls'
@@ -109,6 +114,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -128,5 +137,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = './apps/proj/static'
+
 
 ADMIN_SITE_URL = 'adminus'
+
+SHELL_PLUS_PRE_IMPORTS = [
+    ('django.db', ('connection', 'reset_queries', 'connections')),
+    ('datetime', ('datetime', 'timedelta', 'date')),
+    ('json', ('loads', 'dumps')),
+]
+SHELL_PLUS_MODEL_ALIASES = {
+    'university': {
+        'Student': 'S',
+        'Account': 'A',
+        'Group': 'G',
+        'Professor': 'P',
+    },
+}
+SHELL_PLUS = 'ipython'
+SHELL_PLUS_PRINT_SQL = True
+SHELL_PLUS_PRINT_SQL_TRUNCATE = 1000

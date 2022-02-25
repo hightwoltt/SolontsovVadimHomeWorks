@@ -4,6 +4,10 @@ from tokenize import group
 from typing import Optional
 from django.contrib import admin
 from django.core.handlers.wsgi import WSGIRequest
+
+from django.contrib import admin
+from django.core.handlers.wsgi import WSGIRequest
+
 from . models import (Account, 
                     Student, 
                     Group,
@@ -53,6 +57,9 @@ class StudentAdmin(admin.ModelAdmin):
     # )
     MAX_STUDENT_AGE = 16
     SUPER_STUDENT_NAME = 'ВладимирВладимировичПутин'
+   
+    MAX_STUDENT_AGE = 16
+    SUPER_STUDENT_NAME = 'DevAdmin'
 
     def student_age_validation(
         self,
