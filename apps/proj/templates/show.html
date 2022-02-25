@@ -1,33 +1,65 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com/%22%3E">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <title>User</title>
+    <link rel="stylesheet" href="/static/css/style2.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap" rel="stylesheet">
-
     <title>{% block title %}{{ ctx_title }}{% endblock %}</title>
 </head>
+    
 <body>
-    <header></header>
+    <header class="header">
+        <div class="header__avatar"></div>
+    </header>
     <main>
-        <div class="user__list">
-                <div class="user__info">
-                    <h1>USER</h1>
-                    <div class="info">
-                        <span id="user_name">{{user.first_name}} {{user.last_name}}</span><br> Login: {{user.username}} <br> Role: <span id="role">{% if user.is_superuser %}Admin{% else %}User{% endif %}</span>
-                    </div>
-                    <button class="edit" onclick="location.href = 'show'">Show</button>
-                    <button class="delete">Delete</button>
-                </div>
+        <div class="basic__info">
+            <h2 style="margin-bottom: 15px;">Basic information</h2>
+            <div class="user__name basic__info__block">
+                <h3>First name</h3>
+                <h3 id="firstname">{{ ctx_user.first_name }}</h3>
+            </div>
 
+            <div class="user__name basic__info__block">
+                <h3>Last name</h3>
+                <h3 id="lastname">{{ ctx_user.last_name }}</h3>
+            </div>
+
+            <div class="user__name basic__info__block">
+                <h3>Username</h3>
+                <h3 id="username">{{ ctx_user.username }}</h3>
+            </div>
+        </div>
+
+        <!-- Line -->
+        <div class="vertical"></div>
+        <!-- LINE -->
+
+        <div class="user__settings">
+            <h2 style="margin-bottom: 15px;">User settings</h2>
+            <div class="settings__language basic__info__block">
+                <h3>Language</h3>
+                <h3 id="language">...</h3>
+            </div>
+
+            <div class="settings__country basic__info__block">
+                <h3>Country</h3>
+                <h3 id="country">...</h3>
+            </div>
+
+            <div class="settings__btn basic__info__block">
+                <a href="#">Edit</a>
+                <a href="#">Change password</a>
+            </div>
         </div>
     </main>
-    <script src="/static/js/app.js"></script>
 </body>
+
 </html>

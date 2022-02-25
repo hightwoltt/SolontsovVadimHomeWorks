@@ -51,8 +51,28 @@ def admin(request: WSGIRequest) -> HttpResponse:
         context = {"ctx_users":User.objects.all()},
     )
 
-def show(request: WSGIRequest) -> HttpResponse:
+def show(request: WSGIRequest, username: str) -> HttpResponse:
+    
+    user: User = User.objects.get(username=username)
+    context: dict = {
+        'ctx_title': 'Профиль',
+        'ctx_user': user,
+    }
     return render(
         request,
         'show.html',
+        context=context
+    )
+
+def delete(request: WSGIRequest, username: str) -> HttpResponse:
+    
+    user: User = User.objects.get(username=username)
+    context: dict = {
+        'ctx_title': 'Профиль',
+        'ctx_user': user,
+    }
+    return render(
+        request,
+        'show.html',
+        context=context
     )
