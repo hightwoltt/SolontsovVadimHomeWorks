@@ -15,20 +15,14 @@ Including another URLconf
 """
 import django
 from django.contrib import admin
-<<<<<<< HEAD
 from django.conf import settings
 from django.urls import include, path
-=======
 from django.urls import path
 from django.conf import settings
 from django.urls import include
->>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 
 urlpatterns = [
     path(settings.ADMIN_SITE_URL, admin.site.urls),
     path('', include('proj.urls')),
-<<<<<<< HEAD
     path('__debug__/', include('debug_toolbar.urls')),
-=======
->>>>>>> 7bf75a6e7f46b3e8e32095e93b7f505a7e614077
 ]
