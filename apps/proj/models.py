@@ -1,14 +1,12 @@
-
-
 from venv import create
 from django.db import models
-
 from venv import create
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.db.models import QuerySet
+from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 from abstracts.models import AbstractDateTime
 
@@ -69,7 +67,7 @@ class Account(AbstractDateTime):
 
 
 class Group(AbstractDateTime):
-
+    pass
     GROUP_NAME_MAX_LENGTH = 10
 
     name = models.CharField(
@@ -85,10 +83,6 @@ class Group(AbstractDateTime):
         )
         verbose_name = 'Группа'
         verbose_name_plural = 'Группы'
-
-
-class Foo():
-    pass
 
 
 class Student(AbstractDateTime):

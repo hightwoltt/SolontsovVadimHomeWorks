@@ -113,7 +113,6 @@ class ProfessorAdmin(admin.ModelAdmin):
         'datetime_updated',
         'datetime_deleted',
     )
-    pass
 
 admin.site.register(
     Professor, ProfessorAdmin
