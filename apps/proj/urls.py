@@ -6,12 +6,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.admin),
-    path('index2/', views.index2),
-    # path('admin/', views.admin),
+    path('index2/', views.index3),
 
-    re_path(r'^show/(?P<username>\w+)/$', 
-    views.show, 
-    name='page_show'
+    path(
+        'show/<int:user_id>/',
+        views.show,
+        name='page_show'
     ),
 
     path('delete',
