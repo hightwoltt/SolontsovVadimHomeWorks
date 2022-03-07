@@ -32,6 +32,8 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+AUTH_USER_MODEL = 'auths.CustomUser'
+
 # Application definition
 
 DJANGO_AND_THIRD_PARTY_APPS = [
@@ -49,7 +51,8 @@ PROJECTS_APPS = [
     'proj.apps.ProjConfig',
     'abstracts.apps.AbstractsConfig',
     'django_extensions',
-    'auths',
+    'auths.apps.AuthsConfig',
+    
 ]
 
 INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECTS_APPS

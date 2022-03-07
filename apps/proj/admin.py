@@ -8,31 +8,13 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.contrib import admin
 from django.core.handlers.wsgi import WSGIRequest
 
-from . models import (Account, 
+from auths.models import CustomUser
+
+from . models import ( 
                     Student, 
                     Group,
                     Professor,
     )
-
-class AccountAdmin(admin.ModelAdmin):
-
-    readonly_fields = (
-        'datetime_created',
-        'datetime_updated',
-        'datetime_deleted',
-    )
-
-     # Задаюся поля в только для чтения
-    def get_readonly_fields(
-        self,
-        request: WSGIRequest,
-        obj:Optional[Account] = None
-    ) -> tuple:
-
-        # Readonly для описания
-        if obj:
-            return self.readonly_fields + ('description',)
-        return self.readonly_fields
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -124,8 +106,4 @@ admin.site.register(
 
 admin.site.register(
     Student, StudentAdmin
-)
-
-admin.site.register(
-    Account, AccountAdmin
 )

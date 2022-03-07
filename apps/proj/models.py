@@ -9,6 +9,7 @@ from django.db.models import QuerySet
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
 from abstracts.models import AbstractDateTime
+from auths.models import CustomUser
 
 
 class StudentQuerySet(QuerySet): 
@@ -38,32 +39,32 @@ class GroupQuerySet(QuerySet):
         )
     
 
-class Account(AbstractDateTime):
+# class Account(AbstractDateTime):
 
-    ACCOUNT_FULL_NAME_MAX_LENGTH = 30
-    GROUP_NAME_MAX_LENGHT = 15
+#     ACCOUNT_FULL_NAME_MAX_LENGTH = 30
+#     GROUP_NAME_MAX_LENGHT = 15
 
-    user = models.OneToOneField(
-        User, 
-        on_delete=models.CASCADE
-    )
+#     user = models.OneToOneField(
+#         User, 
+#         on_delete=models.CASCADE
+#     )
 
-    full_name = models.CharField(
-        max_length=ACCOUNT_FULL_NAME_MAX_LENGTH
-    )
-    description = models.TextField()
+#     full_name = models.CharField(
+#         max_length=ACCOUNT_FULL_NAME_MAX_LENGTH
+#     )
+#     description = models.TextField()
     
-    def __str__(self) -> str:
-        return f'Account:{self.user.id} / {self.full_name}'
+#     def __str__(self) -> str:
+#         return f'Account:{self.user.id} / {self.full_name}'
 
-    class Meta:
-        ordering = (
-            'full_name',
-        )
-        verbose_name = 'Аккаунт'
-        verbose_name_plural = 'Аккаунты'
+#     class Meta:
+#         ordering = (
+#             'full_name',
+#         )
+#         verbose_name = 'Аккаунт'
+#         verbose_name_plural = 'Аккаунты'
 
-    objects = AccountQuerySet().as_manager()
+#     objects = AccountQuerySet().as_manager()
 
 
 class Group(AbstractDateTime):
@@ -91,7 +92,7 @@ class Student(AbstractDateTime):
     MAX_AGE = 27
 
     account = models.ForeignKey(
-        Account,
+        CustomUser,
         on_delete=models.CASCADE
     )
 

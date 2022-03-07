@@ -10,20 +10,24 @@ from django.db.models import QuerySet
 from django.contrib.auth.models import User
 from django.shortcuts import render
 
-from . models import (Account, 
+from auths.models import CustomUser
+from . models import (
                     Student) 
 
 def index(request: WSGIRequest) -> HttpResponse:
     ''' Show last user '''
 
     student: Student = Student.objects.last()
-    account: Account = student.account
-    user: User = account.user
+    customuser: CustomUser
+    login: CustomUser.email
+    # account: Account = student.account
+    # user: User = account.user
     
-    text: str = f'<h1>Имя пользователя - {user.first_name}<br>  \
-        Имя аккаунта - {account.full_name} <br> \
-        Средний балл - {student.gpi}<br> \
-        </h1>'
+    # text: str = f'<h1>Имя пользователя - {CustomUser.is_active}<br>  \
+    #     Имя аккаунта - {account.full_name} <br> \
+    #     Средний балл - {student.gpi}<br> \
+    #     </h1>'
+    text: str = f'login {login}'
     response: HttpResponse = HttpResponse(text)
     return response
 
@@ -33,7 +37,7 @@ def index2 (request: WSGIRequest) -> HttpResponse:
     )
 
 def index3(request: WSGIRequest) -> HttpResponse:
-    users: QuerySet = User.objects.all()
+    users: QuerySet = CustomUser.objects.all()
     context: dict = {
         'title': 'Главная страница',
         'users': users,
@@ -48,12 +52,12 @@ def admin(request: WSGIRequest) -> HttpResponse:
     return render(
         request,
         'admin.html',
-        context = {"ctx_users":User.objects.all()},
+        context = {"ctx_users":CustomUser.objects.all()},
     )
 
 def show(request: WSGIRequest, user_id: str) -> HttpResponse:
     
-    user: User = User.objects.get(id=user_id)
+    user: User = CustomUser.objects.get(id=user_id)
     context: dict = {
         'ctx_title': 'Профиль',
         'ctx_user': user,
@@ -66,7 +70,7 @@ def show(request: WSGIRequest, user_id: str) -> HttpResponse:
 
 def delete(request: WSGIRequest, username: str) -> HttpResponse:
     
-    user: User = User.objects.get(username=username)
+    user: User = CustomUser.objects.get(username=username)
     context: dict = {
         'ctx_title': 'Профиль',
         'ctx_user': user,

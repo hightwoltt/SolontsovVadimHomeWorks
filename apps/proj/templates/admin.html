@@ -22,10 +22,9 @@
                 <div class="user__info">
                     <h1>USER</h1>
                     <div class="info">
-                        <span id="user_name">{{user.first_name}} 
-                            {{user.last_name}}</span><br> 
-                            Login: {{user.username}} <br> 
-                            Role: <span id="role">{% if user.is_superuser %}Admin{% else %}User{% endif %}</span>
+                        <span id="user_name"></span><br> 
+                            Login:  <br> 
+                            Role: <span id="role"></span>
                     </div>
                     <a class='edit' href="{% url 'page_show' user.id %}" role="button">Профиль</a>
                     <a class='edit' href="{% url 'page_delete' %}" role="button">Удалить</a>
