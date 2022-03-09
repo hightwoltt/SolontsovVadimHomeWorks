@@ -1,4 +1,5 @@
 
+from msilib.schema import File
 from re import search
 from tokenize import group
 from typing import Optional
@@ -10,7 +11,9 @@ from django.core.handlers.wsgi import WSGIRequest
 
 from auths.models import CustomUser
 
-from . models import ( 
+from . models import (
+                    File,
+                    Homework,
                     Student, 
                     Group,
                     Professor,
@@ -95,6 +98,30 @@ class ProfessorAdmin(admin.ModelAdmin):
         'datetime_updated',
         'datetime_deleted',
     )
+
+
+class HomeworkAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'student_name',
+    )
+
+
+class FileAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'file',
+        'title'
+    )
+    
+
+admin.site.register(
+    File, FileAdmin
+) 
+
+admin.site.register(
+    Homework, HomeworkAdmin
+) 
 
 admin.site.register(
     Professor, ProfessorAdmin

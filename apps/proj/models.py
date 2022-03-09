@@ -1,3 +1,5 @@
+from pyexpat import model
+from tkinter import CASCADE
 from venv import create
 from django.db import models
 from venv import create
@@ -38,6 +40,23 @@ class GroupQuerySet(QuerySet):
             self.Stuent.gpa__gt == self.HIGHT_GPA_LVL
         )
     
+# class HomeworkQuerySet(QuerySet):
+    
+#     def get_delete_homeworks(self) -> QuerySet:
+#         if Homework.DateTimeDeleted == NULL:
+#             return
+#         else:
+#             self.filter(
+#                 self.Homework.not_deleted == False
+#             )
+
+
+class HomeworkQuerySet(QuerySet):
+    
+    def get_delete_fields(self) -> QuerySet:
+        return  self.filter(
+            self.Homework.not_deleted == True
+        )
 
 # class Account(AbstractDateTime):
 
@@ -197,3 +216,66 @@ class Professor(AbstractDateTime):
         )
         verbose_name = 'Преподаватель'
         verbose_name_plural = 'Преподаватели'
+
+
+class File(AbstractDateTime):
+
+    title = models.CharField(
+        max_length = 35
+    )
+    
+    file = models.FileField(
+        upload_to='',
+        max_length=100
+    )
+
+    def __str__(self) -> str:
+        return f'Домашнее задание: {self.title}'
+
+    class Meta:
+        ordering = (
+            'title',
+        )
+        verbose_name = 'Файл ДЗ'
+        verbose_name_plural = 'Файлы ДЗ'
+
+
+class Homework(AbstractDateTime,):
+    
+    title = models.CharField(
+        max_length=35
+    )
+
+    subject = models.CharField(
+        max_length=35
+    )
+
+    logo = models.ImageField()
+
+    is_checked = models.BooleanField(
+        default=False
+    )
+
+    homework_file = models.ForeignKey(
+        File, on_delete=models.CASCADE
+    )
+
+    student_name = models.OneToOneField(
+        Student, on_delete=models.PROTECT
+    )
+
+    not_deleted = models.BooleanField(
+        default = False
+    )
+
+    def __str__(self) -> str:
+        return f'Предмет ДЗ: {self.subject}'
+
+    class Meta:
+        ordering = (
+            'title',
+            'subject',
+            'student_name',
+        )
+        verbose_name = 'Домашнее задание'
+        verbose_name_plural = 'Домашние задания'

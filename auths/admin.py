@@ -15,7 +15,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ('email','is_active')
+    list_display = ('email','is_active',)
     list_filter = ('email', 'is_active',)
     fieldsets = (
         (
