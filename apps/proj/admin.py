@@ -103,15 +103,18 @@ class ProfessorAdmin(admin.ModelAdmin):
 class HomeworkAdmin(admin.ModelAdmin):
 
     readonly_fields = (
-        'student_name',
+        'datetime_created',
+        'datetime_updated',
+        'datetime_deleted',
     )
 
 
 class FileAdmin(admin.ModelAdmin):
 
     readonly_fields = (
-        'file',
-        'title'
+        'datetime_created',
+        'datetime_updated',
+        'datetime_deleted',
     )
     
 

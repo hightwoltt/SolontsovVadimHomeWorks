@@ -58,33 +58,6 @@ class HomeworkQuerySet(QuerySet):
             self.Homework.not_deleted == True
         )
 
-# class Account(AbstractDateTime):
-
-#     ACCOUNT_FULL_NAME_MAX_LENGTH = 30
-#     GROUP_NAME_MAX_LENGHT = 15
-
-#     user = models.OneToOneField(
-#         User, 
-#         on_delete=models.CASCADE
-#     )
-
-#     full_name = models.CharField(
-#         max_length=ACCOUNT_FULL_NAME_MAX_LENGTH
-#     )
-#     description = models.TextField()
-    
-#     def __str__(self) -> str:
-#         return f'Account:{self.user.id} / {self.full_name}'
-
-#     class Meta:
-#         ordering = (
-#             'full_name',
-#         )
-#         verbose_name = 'Аккаунт'
-#         verbose_name_plural = 'Аккаунты'
-
-#     objects = AccountQuerySet().as_manager()
-
 
 class Group(AbstractDateTime):
     pass
@@ -241,16 +214,24 @@ class File(AbstractDateTime):
 
 
 class Homework(AbstractDateTime,):
+
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.PROTECT
+    )
     
     title = models.CharField(
-        max_length=35
+        max_length=100
     )
 
     subject = models.CharField(
-        max_length=35
+        max_length=50
     )
 
-    logo = models.ImageField()
+    logo = models.ImageField(
+        'Лого ДЗ',
+        upload_to='homework/',
+        max_length = 255
+    )
 
     is_checked = models.BooleanField(
         default=False
@@ -268,8 +249,10 @@ class Homework(AbstractDateTime,):
         default = False
     )
 
+    objects = HomeworkQuerySet().as_manager()
+
     def __str__(self) -> str:
-        return f'Предмет ДЗ: {self.subject}'
+        return f'Предмет ДЗ: {self.subject} | {self.title}'
 
     class Meta:
         ordering = (

@@ -4,6 +4,7 @@ from django.contrib.auth.forms import(
     UserChangeForm,
 )
 from .models import CustomUser
+from django import forms
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -20,4 +21,17 @@ class CustomUserChangeForm(UserCreationForm):
         model = CustomUser
         fields = (
             'email',
+        )
+
+class CustomUserForm(forms.ModelForm):
+    email = forms.EmailField()
+    password = forms.CharField(
+        widget=forms.PasswordInput
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = (
+            'email',
+            'password'
         )

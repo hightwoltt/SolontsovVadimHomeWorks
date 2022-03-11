@@ -14,9 +14,25 @@ urlpatterns = [
         name='page_show'
     ),
 
-    path('delete',
+    path('delete/',
     views.delete, 
     name='page_delete'
     ),
+
+    path('register/',
+    views.register,
+    name='registration_form'
+    ),
+
+    path('login/',
+    views.login,
+    name='login_form'
+    ),
+
+    path('logout/',
+    views.logout,
+    name='logout_form'
+    ),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
  
