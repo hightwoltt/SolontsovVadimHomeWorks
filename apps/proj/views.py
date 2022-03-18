@@ -1,10 +1,5 @@
-from cgitb import text
-from multiprocessing import context
-from os import name
-from re import A
-from tkinter import E
-from urllib import response
 
+from multiprocessing import context
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, QueryDict
 from django.db.models import QuerySet
@@ -20,15 +15,31 @@ from auths.models import CustomUser
 from . models import (
     Homework,
     Student
-) 
+)
+
 
 def index(request: WSGIRequest) -> HttpResponse:
     
     if not request.user.is_authenticated:
         return render(
             request,
-            'proj/login.html'
-        ) 
+            'login.html',
+        )
+
+    homeworks: QuerySet = Homework.objects.filter(
+       user=request.user
+    )
+
+    context: dict = {
+        'ctx_title': 'Главная',
+        'ctx_homework': homeworks,
+    }
+
+    return render(
+        request,
+        template_name='index.html',
+        context=context
+    )
 
 def index3(request: WSGIRequest) -> HttpResponse:
     users: QuerySet = CustomUser.objects.all()

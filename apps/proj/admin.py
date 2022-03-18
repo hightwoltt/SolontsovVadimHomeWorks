@@ -1,7 +1,5 @@
 
-from msilib.schema import File
-from re import search
-from tokenize import group
+
 from typing import Optional
 from django.contrib import admin
 from django.core.handlers.wsgi import WSGIRequest
@@ -11,14 +9,13 @@ from django.core.handlers.wsgi import WSGIRequest
 
 from auths.models import CustomUser
 
-from . models import (
+from .models import (
                     File,
                     Homework,
                     Student, 
                     Group,
                     Professor,
-    )
-
+)
 
 class StudentAdmin(admin.ModelAdmin):
 

@@ -1,14 +1,11 @@
-from pyexpat import model
-from tkinter import CASCADE
-from venv import create
+
 from django.db import models
-from venv import create
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.db.models import QuerySet
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin)
 
 from abstracts.models import AbstractDateTime
 from auths.models import CustomUser
@@ -58,6 +55,8 @@ class HomeworkQuerySet(QuerySet):
             self.Homework.not_deleted == True
         )
 
+class FileQuerySet(QuerySet):
+    pass
 
 class Group(AbstractDateTime):
     pass
@@ -191,74 +190,53 @@ class Professor(AbstractDateTime):
         verbose_name_plural = 'Преподаватели'
 
 
-class File(AbstractDateTime):
-
-    title = models.CharField(
-        max_length = 35
-    )
-    
-    file = models.FileField(
-        upload_to='',
-        max_length=100
-    )
-
-    def __str__(self) -> str:
-        return f'Домашнее задание: {self.title}'
-
-    class Meta:
-        ordering = (
-            'title',
-        )
-        verbose_name = 'Файл ДЗ'
-        verbose_name_plural = 'Файлы ДЗ'
-
-
-class Homework(AbstractDateTime,):
-
+class Homework(AbstractDateTime):
     user = models.ForeignKey(
         CustomUser, on_delete=models.PROTECT
     )
+    title = models.CharField(max_length=100)
+
+    subject = models.CharField(max_length=50)
     
-    title = models.CharField(
-        max_length=100
-    )
-
-    subject = models.CharField(
-        max_length=50
-    )
-
     logo = models.ImageField(
-        'Лого ДЗ',
+        'Лого домашней работы',
         upload_to='homework/',
-        max_length = 255
+        max_length=255
     )
-
-    is_checked = models.BooleanField(
-        default=False
-    )
-
-    homework_file = models.ForeignKey(
-        File, on_delete=models.CASCADE
-    )
-
-    student_name = models.OneToOneField(
-        Student, on_delete=models.PROTECT
-    )
-
-    not_deleted = models.BooleanField(
-        default = False
-    )
+    is_checked = models.BooleanField(default=False)
 
     objects = HomeworkQuerySet().as_manager()
 
     def __str__(self) -> str:
-        return f'Предмет ДЗ: {self.subject} | {self.title}'
+        return f'{self.subject} | {self.title}'
 
     class Meta:
         ordering = (
-            'title',
-            'subject',
-            'student_name',
+            '-datetime_created',
         )
-        verbose_name = 'Домашнее задание'
-        verbose_name_plural = 'Домашние задания'
+        verbose_name = 'Домашняя работа'
+        verbose_name_plural = 'Домашние работы'
+
+class File(AbstractDateTime):
+
+    homework = models.ForeignKey(
+        Homework, on_delete=models.PROTECT
+    )
+    title = models.CharField(max_length=100)
+    obj = models.FileField(
+        'Объект файла',
+        upload_to='homework_files/%Y/%m/%d/',
+        max_length=255
+    )
+
+    objects = FileQuerySet().as_manager()
+
+    def __str__(self) -> str:
+        return f'{self.homework.title} | {self.title}'
+
+    class Meta:
+        ordering = (
+            '-datetime_created',
+        )
+        verbose_name = 'Файл'
+        verbose_name_plural = 'Файлы'
