@@ -1,5 +1,6 @@
 
 from multiprocessing import context
+from re import template
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, QueryDict
 from django.db.models import QuerySet
@@ -17,6 +18,24 @@ from . models import (
     Student
 )
 
+from django.views import View
+
+class StudentViewsSet(View):
+    pass
+
+class IndexView(View):
+
+    template_name = 'proj/jogin.html'
+    # queryset = 
+    
+    def get(
+        self, 
+        request: WSGIRequest,
+        *args: tuple,
+        **kwargs
+        ):
+
+        return HttpResponse('Hello, world')
 
 def index(request: WSGIRequest) -> HttpResponse:
     
@@ -91,6 +110,7 @@ def register(request: WSGIRequest) -> HttpResponse:
     form: CustomUserForm = CustomUserForm(
         request.POST
     )
+
     if form.is_valid():
         user: CustomUser = form.save(
             commit=False
@@ -118,7 +138,7 @@ def register(request: WSGIRequest) -> HttpResponse:
                 {'homeworks': homeworks}
             )
     context: dict = {
-        'from': form
+        'form': form
     }
 
     return render (
@@ -126,6 +146,7 @@ def register(request: WSGIRequest) -> HttpResponse:
         'proj/register.html',
         context
     )
+
 def login(request: WSGIRequest) -> HttpResponse:
 
     if request.method == 'POST':

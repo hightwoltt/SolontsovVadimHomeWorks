@@ -56,7 +56,11 @@ class HomeworkQuerySet(QuerySet):
         )
 
 class FileQuerySet(QuerySet):
-    pass
+    
+    def get_is_checked_homeworks(self) -> QuerySet:
+        return self.filter(
+            homework__is_checked=True
+        )
 
 class Group(AbstractDateTime):
     pass
@@ -212,7 +216,7 @@ class Homework(AbstractDateTime):
 
     class Meta:
         ordering = (
-            '-datetime_created',
+            'datetime_created',
         )
         verbose_name = 'Домашняя работа'
         verbose_name_plural = 'Домашние работы'
@@ -222,6 +226,7 @@ class File(AbstractDateTime):
     homework = models.ForeignKey(
         Homework, on_delete=models.PROTECT
     )
+
     title = models.CharField(max_length=100)
     obj = models.FileField(
         'Объект файла',
