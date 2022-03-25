@@ -104,6 +104,7 @@ class Student(AbstractDateTime):
 
     )
 
+    
     def __str__(self) -> str:
         return f'Аккаунт: {self.account} \
         Возраст {self.age} \
