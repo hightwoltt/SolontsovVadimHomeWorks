@@ -1,6 +1,10 @@
 
+from json.tool import main
 from multiprocessing import context
 from re import template
+import re
+from select import select
+from urllib import request
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, QueryDict
 from django.db.models import QuerySet
@@ -17,16 +21,19 @@ from . models import (
     Homework,
     Student
 )
-
+from django.template import loader
 from django.views import View
 
 class StudentViewsSet(View):
     pass
 
+class get_html_response(self, **kwargs,):
+    return
+
 class IndexView(View):
 
-    template_name = 'proj/jogin.html'
-    # queryset = 
+    template_name = 'login.html'
+    queryset: QuerySet = Homework.objects.filter()
     
     def get(
         self, 
@@ -35,30 +42,150 @@ class IndexView(View):
         **kwargs
         ):
 
-        return HttpResponse('Hello, world')
-
-def index(request: WSGIRequest) -> HttpResponse:
-    
-    if not request.user.is_authenticated:
-        return render(
-            request,
-            'login.html',
+        if not request.user.is_authentificated:
+            return render(
+                request,
+                'login.html',
         )
 
-    homeworks: QuerySet = Homework.objects.filter(
-       user=request.user
+        homeworks: QuerySet = Homework.objects.filter(
+            user=request.user
+        )
+        context: dict = {
+            'ctx_title': 'Главная страница',
+            'ctx_users': homeworks,
+        }
+        template_name = loader.get_template(
+            'main.html',
+        )
+
+        return HttpResponse(
+            template_name.render(
+                context,
+                request,
+            ),
+            content_type = 'text.html',
+        )
+
+class RegisterView(View):
+    template_name = 'register.html'
+    queryset: QuerySet = Homework.objects.filter()
+    
+    def get(
+        self, 
+        request: WSGIRequest,
+        *args: tuple,
+        **kwargs
+        ):
+
+        if not request.user.is_authentificated:
+            return render(
+                request,
+                'login.html',
+        )
+
+        homeworks: QuerySet = Homework.objects.filter(
+            user=request.user
+        )
+        context: dict = {
+            'ctx_title': 'Главная страница',
+            'ctx_users': homeworks,
+        }
+        template_name = loader.get_template(
+            'main.html',
+        )
+
+        return HttpResponse(
+            template_name.render(
+                context,
+                request,
+            ),
+            content_type = 'text.html',
+        )
+
+    def post(
+        self, 
+        request: WSGIRequest,
+        *args: tuple,
+        **kwargs
+        ):
+
+        if not request.user.is_authentificated:
+            return render(
+                request,
+                'login.html',
+        )
+
+        form: CustomUserForm = CustomUserForm(
+        request.POST
     )
 
-    context: dict = {
-        'ctx_title': 'Главная',
-        'ctx_homework': homeworks,
-    }
+        if form.is_valid():
+            user: CustomUser = form.save(
+                commit=False
+            )
+            email: str = form.cleaned_data['email']
+            password: str = form.cleaned_data['password']
+            user.email = email
+            user.set_password(password)
+            user.save()
 
-    return render(
-        request,
-        template_name='index.html',
-        context=context
-    )
+            user: CustomUser = dj_authenticate(
+                email=email,
+                password=password
+            )
+            if user and user.is_active:
+
+                dj_login(request, user)
+
+                homeworks: QuerySet = Homework.objects.filter(
+                    user=request.user
+                )
+                template_name = loader.get_template(
+                    'main.html'
+                )
+                return HttpResponse(
+                    template_name.render(
+                    context, request
+                    ),
+                    content_type='text.html'
+                    )
+        template_name = loader.get_template(
+            'register.html',
+            )
+        context: dict = {
+            'form': form,
+        }
+        return HttpResponse(
+            template_name.render(
+                context, request,
+            ),
+            content_type='text.html',
+        )
+
+# def index(request: WSGIRequest) -> HttpResponse:
+    
+#     if not request.user.is_authenticated:
+#         return render(
+#             request,
+#             'login.html',
+#         )
+
+#     homeworks: QuerySet = Homework.objects.filter(
+#        user=request.user
+#     )
+
+#     context: dict = {
+#         'ctx_title': 'Главная',
+#         'ctx_homework': homeworks,
+#     }
+
+#     return render(
+#         request,
+#         template_name='index.html',
+#         context=context
+#     )
+
 
 def index3(request: WSGIRequest) -> HttpResponse:
     users: QuerySet = CustomUser.objects.all()

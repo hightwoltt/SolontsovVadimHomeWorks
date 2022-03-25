@@ -50,9 +50,9 @@ class GroupQuerySet(QuerySet):
 
 class HomeworkQuerySet(QuerySet):
     
-    def get_delete_fields(self) -> QuerySet:
-        return  self.filter(
-            self.Homework.not_deleted == True
+    def get_not_deleted(self) -> QuerySet:
+        return self.filter(
+            datetime_deleted__isnull=True
         )
 
 class FileQuerySet(QuerySet):
@@ -104,7 +104,6 @@ class Student(AbstractDateTime):
 
     )
 
-    
     def __str__(self) -> str:
         return f'Аккаунт: {self.account} \
         Возраст {self.age} \
