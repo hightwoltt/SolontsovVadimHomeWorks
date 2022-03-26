@@ -195,6 +195,7 @@ class Professor(AbstractDateTime):
 
 
 class Homework(AbstractDateTime):
+    
     user = models.ForeignKey(
         CustomUser, on_delete=models.PROTECT
     )
