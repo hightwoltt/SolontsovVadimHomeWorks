@@ -1,5 +1,8 @@
 
-from typing import Optional
+from argparse import FileType
+from email.mime import image
+from resource import prlimit
+from typing import Optional, Tuple
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, QueryDict
@@ -18,9 +21,11 @@ from auths.forms import CustomUserForm
 from auths.models import CustomUser
 from abstracts.hanlers import ViewHandler
 from . models import (
+    File,
     Homework,
     Student
 )
+from proj.forms import(CreateHomeworkForm)
 
 class IndexView(ViewHandler, View):
 
@@ -58,10 +63,11 @@ class IndexView(ViewHandler, View):
             context,
         )
 
+
 class RegisterView(ViewHandler, View):
 
     template_name = 'proj/register.html'
-    
+
     queryset: QuerySet = Homework.objects.filter()
     
     def get(
@@ -127,7 +133,7 @@ class RegisterView(ViewHandler, View):
 
                 context: dict = {
                     'ctx_homeworks': homeworks,
-                }
+                }   
                 
                 template_name = 'proj/page_main.html'
 
@@ -226,7 +232,8 @@ class LoginView(ViewHandler, View):
             context,
         )
 
-def Index3View(ViewHandler, View):
+
+class IndexView(ViewHandler, View):
 
     template_name = 'proj/index.html'
 
@@ -339,6 +346,7 @@ class  LogoutView(ViewHandler, View):
             context
         )
 
+
 def delete(request: WSGIRequest, username: str) -> HttpResponse:
     
     user: User = CustomUser.objects.get(username=username)
@@ -351,3 +359,101 @@ def delete(request: WSGIRequest, username: str) -> HttpResponse:
         'delete.html',
         context=context
     )
+
+
+class CreateHomeworkViev(ViewHandler, View):
+
+    IMAGE_FILE_TYPES = (
+        'jpeg',
+        'png',
+        'img',
+    )
+
+    template_name = 'proj/homework_form.html'
+
+    def get(
+        self, 
+        request: WSGIRequest,
+        *args: tuple,
+        **kwargs
+    ) -> HttpResponse:
+
+        form: CreateHomeworkForm = CreateHomeworkForm(
+            request.POST
+        )
+    
+        context: dict = {
+            'form': form,
+        }
+
+        template_name = 'proj/homework_form.html'
+        
+
+        return self.get_http_response(
+            request,
+            template_name,
+            context,
+        )
+        
+    def post(
+        self,
+        request: WSGIRequest,
+        *args: Tuple,
+        **kwargs
+    ):
+
+        form: CreateHomeworkForm = CreateHomeworkForm(
+            request.POST, request.FILES
+        )
+
+        if form.is_valid():
+            homework_form: Homework = form.save(
+                commit=False
+            )
+
+            title: str = form.cleaned_data['title']
+            subject: str = form.cleaned_data['subject']
+            logo: image = form.cleaned_data['logo'] 
+            
+            homework_form.title = title
+            homework_form.subject = subject
+            homework_form.logo = logo
+
+            File_Type = homework_form.logo.split('.')
+
+            if File_Type[1] not in self.IMAGE_FILE_TYPES:
+                print('filemame')
+
+            homework_form.save()
+
+            homework_form_user: CustomUser = request.user
+            
+            if user and user.is_active:
+
+                dj_login(request, user)
+
+                homeworks: QuerySet = Homework.objects.filter(
+                    user=request.user
+                )
+
+                context: dict = {
+                    'ctx_homeworks': homeworks,
+                }   
+                
+                template_name = 'proj/page_main.html'
+
+                return self.get_http_response(
+                    request,
+                    self.template_name,
+                    context,
+                )
+
+        context: dict = {
+            'ctx_homework': homework_form,
+        }
+
+        return self.get_http_response(
+            request,
+            self.template_name,
+            context,
+        )

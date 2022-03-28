@@ -1,15 +1,15 @@
 from django.urls import path, re_path
+
 from . import views
 
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import(
+    CreateHomeworkViev,
     IndexView,
     RegisterView,
     ShowView,
-    AdminView,
-    Index3View,
-    LogoutView,
+    LogoutView, 
     LoginView
 )
 
@@ -20,6 +20,7 @@ urlpatterns = [
     path('register/',               RegisterView.as_view(),         name='page_register'),
     path('login/',                  LoginView.as_view(),              name='page_login'),
     path('logout/',                 LogoutView.as_view(),             name='page_logout'),
+    path('create_hw/',              CreateHomeworkViev.as_view(),   name='page_create_hw'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
  

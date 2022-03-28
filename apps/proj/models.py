@@ -229,6 +229,7 @@ class File(AbstractDateTime):
     )
 
     title = models.CharField(max_length=100)
+    
     obj = models.FileField(
         'Объект файла',
         upload_to='homework_files/%Y/%m/%d/',
