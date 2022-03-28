@@ -61,6 +61,7 @@ class IndexView(ViewHandler, View):
 class RegisterView(ViewHandler, View):
 
     template_name = 'proj/register.html'
+    
     queryset: QuerySet = Homework.objects.filter()
     
     def get(
@@ -77,19 +78,18 @@ class RegisterView(ViewHandler, View):
         homeworks: QuerySet = Homework.objects.filter(
             user=request.user
         )
+
         context: dict = {
             'form': form,
         }
-        template_name = loader.get_template(
-            'proj/register.html',
-        )
 
-        return HttpResponse(
-            template_name.render(
-                context,
-                request,
-            ),
-            content_type = 'text/html',
+        template_name = 'proj/register.html'
+        
+
+        return self.get_http_response(
+            request,
+            self.template_name,
+            context,
         )
 
     def post(
@@ -124,15 +124,18 @@ class RegisterView(ViewHandler, View):
                 homeworks: QuerySet = Homework.objects.filter(
                     user=request.user
                 )
-                template_name = loader.get_template(
-                    'proj/page_main.html'
+
+                context: dict = {
+                    'ctx_homeworks': homeworks,
+                }
+                
+                template_name = 'proj/page_main.html'
+
+                return self.get_http_response(
+                    request,
+                    self.template_name,
+                    context,
                 )
-                return HttpResponse(
-                    template_name.render(
-                    context, request
-                    ),
-                    content_type='text/html'
-                    )
 
         context: dict = {
             'form': form,
@@ -147,7 +150,7 @@ class RegisterView(ViewHandler, View):
 
 class LoginView(ViewHandler, View):
 
-    template_name = 'proj/login.html'
+    template_name = 'proj/show.html'
 
     queryset: QuerySet = Homework.objects.get_not_deleted()
 

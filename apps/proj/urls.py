@@ -15,7 +15,7 @@ from .views import(
 
 urlpatterns = [
     path('',                        IndexView.as_view(),            name='page_main'),
-    path('show/<int:homework_id>/',     ShowView.as_view(),               name='page_show'),
+    path('show/<int:homework_id>/', ShowView.as_view(),               name='page_show'),
     path('delete/',                 views.delete,                   name='page_delete'),
     path('register/',               RegisterView.as_view(),         name='page_register'),
     path('login/',                  LoginView.as_view(),              name='page_login'),
