@@ -34,5 +34,4 @@ class CreateHomeworkForm(forms.ModelForm):
             'subject',
             'logo',
             'user',
-            'is_checked',
         )

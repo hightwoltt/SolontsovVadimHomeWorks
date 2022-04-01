@@ -55,12 +55,12 @@ class HomeworkQuerySet(QuerySet):
             datetime_deleted__isnull=True
         )
 
-class FileQuerySet(QuerySet):
+# class FileQuerySet(QuerySet):
     
-    def get_is_checked_homeworks(self) -> QuerySet:
-        return self.filter(
-            homework__is_checked=True
-        )
+#     def get_is_checked_homeworks(self) -> QuerySet:
+#         return self.filter(
+#             homework__is_checked=True
+#         )
 
 class Group(AbstractDateTime):
     pass
@@ -195,6 +195,13 @@ class Professor(AbstractDateTime):
 
 
 class Homework(AbstractDateTime):
+
+    IMAGE_TYPES = (
+        'img',
+        'jpeg',
+        'png',
+        'jpg'
+    )
     
     user = models.ForeignKey(
         CustomUser, on_delete=models.PROTECT
@@ -208,8 +215,7 @@ class Homework(AbstractDateTime):
         upload_to='homework/',
         max_length=255
     )
-    is_checked = models.BooleanField(default=False)
-
+    
     objects = HomeworkQuerySet().as_manager()
 
     def __str__(self) -> str:
@@ -236,7 +242,9 @@ class File(AbstractDateTime):
         max_length=255
     )
 
-    objects = FileQuerySet().as_manager()
+    is_checked = models.BooleanField(default=False)
+
+    # objects = FileQuerySet().as_manager()
 
     def __str__(self) -> str:
         return f'{self.homework.title} | {self.title}'

@@ -1,0 +1,80 @@
+{% extends 'proj/visitor.html' %}
+{% block title %}{{ homework.title }}{% endblock %}
+{% block homeworks_active %}active{% endblock %}
+
+{% block body %}
+
+<div class="container-fluid songs-container">
+    <div class="row">
+        <div class="col-sm-4 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <a href="{% url 'page_create_hw' %}">
+                        {% if ctx_homework.logo %}
+                            <img src="{{ homework.logo.url }}" class="img-responsive">
+                        {% else %}
+                            <h3>None</h3>
+                        {% endif %}
+                    </a>
+                    <h1>{{ ctx_homework.title }} <small>{{ ctx_homework.subject }}</small></h1>
+                    <h2>{{ ctx_homework.user.email }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-8 col-md-9">
+            <ul class="nav nav-pills" style="margin-bottom: 10px;">
+                <li role="presentation" class="active"><a href="{% url 'page_create_hw' %}">ВСЕ</a></li>
+                <li role="presentation"><a href="{% url 'page_create_hw'  %}">Загрузить новый файл</a></li>
+            </ul>
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <h3>ВСЕ файлы</h3>
+
+                    {% if error_message %}
+                        <p><strong>{{ error_message }}</strong></p>
+                    {% endif %}
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Заголовок</th>
+                            <th>Объект</th>
+                            <th>Проверен ли</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for file in ctx_homework.file_set.all %}
+                            <tr>
+                                <td>{{ file.title }}</td>
+                                <td>
+                                    <a target="_blank" href="{{ file.obj.url }}">
+                                        <button type="button" class="btn btn-success btn-xs">
+                                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp; Просмотр
+                                        </button>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'page_create_hw' file.id %}" class="btn-favorite"><span class="glyphicon glyphicon-check {% if file.is_checked %}active{% endif %}"></span></a>
+                                </td>
+                                <td>
+                                    <form action="{% url 'page_create_hw' file.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="file_id" value="{{ file.id }}" />
+                                        <button type="submit" class="btn btn-danger btn-xs">
+                                            <span class="glyphicon glyphicon-remove"></span>&nbsp; Удалить
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

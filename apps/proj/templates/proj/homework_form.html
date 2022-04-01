@@ -16,6 +16,8 @@
                     <form class="form-horizontal" role="form" action="{% url 'page_create_hw'%}" method="post" enctype="multipart/form-data">
 
                         {% csrf_token %}
+                        
+                        {% include 'proj/form_template.html' %}
 
                         {{ form.as_p }}
 

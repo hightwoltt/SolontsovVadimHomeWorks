@@ -3,6 +3,7 @@ from argparse import FileType
 from email.mime import image
 from resource import prlimit
 from typing import Optional, Tuple
+from urllib import request, response
 
 from django.core.handlers.wsgi import WSGIRequest
 from django.http import HttpResponse, QueryDict
@@ -362,98 +363,96 @@ def delete(request: WSGIRequest, username: str) -> HttpResponse:
 
 
 class CreateHomeworkViev(ViewHandler, View):
+    """Homework Create View."""
 
-    IMAGE_FILE_TYPES = (
-        'jpeg',
-        'png',
-        'img',
-    )
-
-    template_name = 'proj/homework_form.html'
+    
+    template_name: str = 'proj/homework_form.html'
 
     def get(
-        self, 
+        self,
         request: WSGIRequest,
         *args: tuple,
-        **kwargs
+        **kwargs: dict
     ) -> HttpResponse:
+        """GET request handler."""
+
+        response: Optional[HttpResponse] = \
+            self.get_validated_response(
+                request
+            )
 
         form: CreateHomeworkForm = CreateHomeworkForm(
             request.POST
         )
-    
-        context: dict = {
-            'form': form,
-        }
 
-        template_name = 'proj/homework_form.html'
-        
-
-        return self.get_http_response(
-            request,
-            template_name,
-            context,
-        )
-        
-    def post(
-        self,
-        request: WSGIRequest,
-        *args: Tuple,
-        **kwargs
-    ):
-
-        form: CreateHomeworkForm = CreateHomeworkForm(
-            request.POST, request.FILES
-        )
-
-        if form.is_valid():
-            homework_form: Homework = form.save(
-                commit=False
-            )
-
-            title: str = form.cleaned_data['title']
-            subject: str = form.cleaned_data['subject']
-            logo: image = form.cleaned_data['logo'] 
-            
-            homework_form.title = title
-            homework_form.subject = subject
-            homework_form.logo = logo
-
-            File_Type = homework_form.logo.split('.')
-
-            if File_Type[1] not in self.IMAGE_FILE_TYPES:
-                print('filemame')
-
-            homework_form.save()
-
-            homework_form_user: CustomUser = request.user
-            
-            if user and user.is_active:
-
-                dj_login(request, user)
-
-                homeworks: QuerySet = Homework.objects.filter(
-                    user=request.user
-                )
-
-                context: dict = {
-                    'ctx_homeworks': homeworks,
-                }   
-                
-                template_name = 'proj/page_main.html'
-
-                return self.get_http_response(
-                    request,
-                    self.template_name,
-                    context,
-                )
+        if response:
+            return response
 
         context: dict = {
-            'ctx_homework': homework_form,
+            'ctx_form': form,
         }
-
         return self.get_http_response(
             request,
             self.template_name,
-            context,
+            context
         )
+
+    def post(
+        self,
+        request: WSGIRequest,
+        *args: tuple,
+        **kwargs: dict
+    ) -> HttpResponse:
+        """POST request handler."""
+
+        form: CreateHomeworkForm = CreateHomeworkForm(
+            request.POST or None,
+            request.FILES or None
+        )
+
+        if not form.is_valid():
+            context: dict = {
+                'ctx_form': form,
+            }
+            return self.get_http_response(
+                request,
+                self.template_name,
+                context
+            )
+
+        homework: CreateHomeworkForm = form.save(
+            commit=False
+        )
+        homework.user = request.user
+        homework.logo = request.FILES['logo']
+
+        file_type: str = homework.logo.url.split('.')[-1].lower()
+
+        if file_type not in Homework.IMAGE_TYPES:
+
+            context: dict = {
+                'ctx_form': form,
+                'ctx_homework': homework,
+                'error_message': 'PNG, JPG, JPEG',
+            }
+
+            return self.get_http_response(
+                request,
+                self.template_name,
+                context
+            )
+
+        homework.save()
+
+        context: dict = {
+            'ctx_homework': homework
+        }
+        return self.get_http_response(
+            request,
+            'proj/homework_detail.html',
+            context
+        )
+
+  
+
+
