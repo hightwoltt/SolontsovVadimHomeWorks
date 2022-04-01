@@ -218,6 +218,22 @@ class Homework(AbstractDateTime):
     
     objects = HomeworkQuerySet().as_manager()
 
+    # @property
+    # def is_checked(self)->bool:
+    #     return f'{self.subject} | {self.title}'
+
+    # @property
+    # def is_checked(self)->bool:
+    #     return File.objects.filter(homework=self).values('is_checked')
+
+    @property
+    def is_checked(self)->bool:
+        return all(
+            self.files.values_list(
+                'is_checked', flat=True
+            )
+        )
+
     def __str__(self) -> str:
         return f'{self.subject} | {self.title}'
 
