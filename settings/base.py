@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 import sys
 
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -30,6 +31,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+AUTH_USER_MODEL = 'auths.CustomUser'
 
 # Application definition
 
@@ -48,6 +54,8 @@ PROJECTS_APPS = [
     'proj.apps.ProjConfig',
     'abstracts.apps.AbstractsConfig',
     'django_extensions',
+    'auths.apps.AuthsConfig',
+    
 ]
 
 INSTALLED_APPS = DJANGO_AND_THIRD_PARTY_APPS + PROJECTS_APPS

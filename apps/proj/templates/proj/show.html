@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User</title>
-    <link rel="stylesheet" href="/static/css/style2.css">
+    <link rel="stylesheet" href="/apps/proj/static/css/homework.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap" rel="stylesheet">
@@ -23,18 +23,18 @@
         <div class="basic__info">
             <h2 style="margin-bottom: 15px;">Basic information</h2>
             <div class="user__name basic__info__block">
-                <h3>First name</h3>
-                <h3 id="firstname">{{ ctx_user.first_name }}</h3>
+                <h3>Название</h3>
+                <h3 id="title">{{ ctx_homework.title }}</h3>
             </div>
 
             <div class="user__name basic__info__block">
-                <h3>Last name</h3>
-                <h3 id="lastname">{{ ctx_user.last_name }}</h3>
+                <h3>Проверен</h3>
+                <h3 id="is_checked">{{ ctx_homework.is_checked }}</h3>
             </div>
 
             <div class="user__name basic__info__block">
-                <h3>Username</h3>
-                <h3 id="username">{{ ctx_user.username }}</h3>
+                <h3>Топик</h3>
+                <h3 id="subject">{{ ctx_homework.subject }}</h3>
             </div>
         </div>
 

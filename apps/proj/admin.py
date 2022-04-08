@@ -1,6 +1,5 @@
 
-from re import search
-from tokenize import group
+
 from typing import Optional
 from django.contrib import admin
 from django.core.handlers.wsgi import WSGIRequest
@@ -8,32 +7,15 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.contrib import admin
 from django.core.handlers.wsgi import WSGIRequest
 
-from . models import (Account, 
+from auths.models import CustomUser
+
+from .models import (
+                    File,
+                    Homework,
                     Student, 
                     Group,
                     Professor,
-    )
-
-class AccountAdmin(admin.ModelAdmin):
-
-    readonly_fields = (
-        'datetime_created',
-        'datetime_updated',
-        'datetime_deleted',
-    )
-
-     # Задаюся поля в только для чтения
-    def get_readonly_fields(
-        self,
-        request: WSGIRequest,
-        obj:Optional[Account] = None
-    ) -> tuple:
-
-        # Readonly для описания
-        if obj:
-            return self.readonly_fields + ('description',)
-        return self.readonly_fields
-
+)
 
 class StudentAdmin(admin.ModelAdmin):
 
@@ -113,7 +95,33 @@ class ProfessorAdmin(admin.ModelAdmin):
         'datetime_updated',
         'datetime_deleted',
     )
-    pass
+
+
+class HomeworkAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'datetime_created',
+        'datetime_updated',
+        'datetime_deleted',
+    )
+
+
+class FileAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'datetime_created',
+        'datetime_updated',
+        'datetime_deleted',
+    )
+    
+
+admin.site.register(
+    File, FileAdmin
+) 
+
+admin.site.register(
+    Homework, HomeworkAdmin
+) 
 
 admin.site.register(
     Professor, ProfessorAdmin
@@ -125,8 +133,4 @@ admin.site.register(
 
 admin.site.register(
     Student, StudentAdmin
-)
-
-admin.site.register(
-    Account, AccountAdmin
 )

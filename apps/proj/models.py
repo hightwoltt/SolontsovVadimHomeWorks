@@ -1,16 +1,14 @@
 
-
-from venv import create
 from django.db import models
-
-from venv import create
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.forms import ValidationError
 from django.db.models import QuerySet
+from django.contrib.auth.models import (AbstractBaseUser, PermissionsMixin)
 
 from abstracts.models import AbstractDateTime
+from auths.models import CustomUser
 
 
 class StudentQuerySet(QuerySet): 
@@ -39,37 +37,33 @@ class GroupQuerySet(QuerySet):
             self.Stuent.gpa__gt == self.HIGHT_GPA_LVL
         )
     
-
-class Account(AbstractDateTime):
-
-    ACCOUNT_FULL_NAME_MAX_LENGTH = 30
-    GROUP_NAME_MAX_LENGHT = 15
-
-    user = models.OneToOneField(
-        User, 
-        on_delete=models.CASCADE
-    )
-
-    full_name = models.CharField(
-        max_length=ACCOUNT_FULL_NAME_MAX_LENGTH
-    )
-    description = models.TextField()
+# class HomeworkQuerySet(QuerySet):
     
-    def __str__(self) -> str:
-        return f'Account:{self.user.id} / {self.full_name}'
+#     def get_delete_homeworks(self) -> QuerySet:
+#         if Homework.DateTimeDeleted == NULL:
+#             return
+#         else:
+#             self.filter(
+#                 self.Homework.not_deleted == False
+#             )
 
-    class Meta:
-        ordering = (
-            'full_name',
+
+class HomeworkQuerySet(QuerySet):
+    
+    def get_not_deleted(self) -> QuerySet:
+        return self.filter(
+            datetime_deleted__isnull=True
         )
-        verbose_name = 'Аккаунт'
-        verbose_name_plural = 'Аккаунты'
 
-    objects = AccountQuerySet().as_manager()
-
+# class FileQuerySet(QuerySet):
+    
+#     def get_is_checked_homeworks(self) -> QuerySet:
+#         return self.filter(
+#             homework__is_checked=True
+#         )
 
 class Group(AbstractDateTime):
-
+    pass
     GROUP_NAME_MAX_LENGTH = 10
 
     name = models.CharField(
@@ -87,17 +81,13 @@ class Group(AbstractDateTime):
         verbose_name_plural = 'Группы'
 
 
-class Foo():
-    pass
-
-
 class Student(AbstractDateTime):
 
     GROUP_NAME_MAX_LENGHT = 15
     MAX_AGE = 27
 
     account = models.ForeignKey(
-        Account,
+        CustomUser,
         on_delete=models.CASCADE
     )
 
@@ -202,3 +192,82 @@ class Professor(AbstractDateTime):
         )
         verbose_name = 'Преподаватель'
         verbose_name_plural = 'Преподаватели'
+
+
+class Homework(AbstractDateTime):
+
+    IMAGE_TYPES = (
+        'img',
+        'jpeg',
+        'png',
+        'jpg'
+    )
+    
+    user = models.ForeignKey(
+        CustomUser, on_delete=models.PROTECT
+    )
+    title = models.CharField(max_length=100)
+
+    subject = models.CharField(max_length=50)
+    
+    logo = models.ImageField(
+        'Лого домашней работы',
+        upload_to='homework/',
+        max_length=255
+    )
+    
+    objects = HomeworkQuerySet().as_manager()
+
+    # @property
+    # def is_checked(self)->bool:
+    #     return f'{self.subject} | {self.title}'
+
+    # @property
+    # def is_checked(self)->bool:
+    #     return File.objects.filter(homework=self).values('is_checked')
+
+    @property
+    def is_checked(self)->bool:
+        return all(
+            self.files.values_list(
+                'is_checked', flat=True
+            )
+        )
+
+    def __str__(self) -> str:
+        return f'{self.subject} | {self.title}'
+
+    class Meta:
+        ordering = (
+            'datetime_created',
+        )
+        verbose_name = 'Домашняя работа'
+        verbose_name_plural = 'Домашние работы'
+
+class File(AbstractDateTime):
+
+    homework = models.ForeignKey(
+        Homework, on_delete=models.PROTECT
+    )
+
+    title = models.CharField(max_length=100)
+    
+    obj = models.FileField(
+        'Объект файла',
+        upload_to='homework_files/%Y/%m/%d/',
+        max_length=255
+    )
+
+    is_checked = models.BooleanField(default=False)
+
+    # objects = FileQuerySet().as_manager()
+
+    def __str__(self) -> str:
+        return f'{self.homework.title} | {self.title}'
+
+    class Meta:
+        ordering = (
+            '-datetime_created',
+        )
+        verbose_name = 'Файл'
+        verbose_name_plural = 'Файлы'
